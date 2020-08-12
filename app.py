@@ -1,12 +1,10 @@
 from flask import session, redirect, url_for, render_template, request
 
-from .forms import LoginForm
 from flask import Flask, jsonify, request, send_file, render_template, redirect, url_for, make_response
 from flask_socketio import SocketIO, send
 import numpy as np
-from . import main
 import matplotlib.pyplot as plt
-import tensorflow.keras
+# import tensorflow.keras
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
@@ -15,8 +13,10 @@ import hashlib
 
 from PIL import Image, ImageOps
 
+app = Flask(__name__)
+
 np.set_printoptions(suppress=True)
-model = tensorflow.keras.models.load_model('keras_model.h5')
+# model = tensorflow.keras.models.load_model('keras_model.h5')
 
 import pyrebase
 
@@ -68,21 +68,12 @@ def get_age_data():
             else:
                 final[4] += 1
     return final
-@main.route('/forum', methods=['GET', 'POST'])
+@app.route('/forum', methods=['GET', 'POST'])
 def index2():
-    """Login form to enter a room."""
-    form = LoginForm()
-    if form.validate_on_submit():
-        session['name'] = form.name.data
-        session['room'] = form.room.data
-        return redirect(url_for('.chat'))
-    elif request.method == 'GET':
-        form.name.data = session.get('name', '')
-        form.room.data = session.get('room', '')
-    return render_template('index2.html', form=form)
+    return redirect("/ai")
 
 
-@main.route('/chat')
+@app.route('/chat')
 def chat():
     """Chat room. The user's name and room must be stored in
     the session."""
@@ -92,27 +83,27 @@ def chat():
         return redirect(url_for('.index'))
     return render_template('chat.html', name=name, room=room)
 
-@main.route('/')
+@app.route('/')
 def index():
     # print(predict('input1.jpg'))
     return render_template('index.html')
 
-@main.route('/upload')
+@app.route('/upload')
 def upload():
     return render_template('upload.html')
 
-@main.route('/trends')
+@app.route('/trends')
 def trends():
     k = get_numbers()
     k1 = get_age_data()
     return render_template('trends.html', a = k[0], b = k[1], p = k1[0], q = k1[1], r = k1[2], s = k1[3], t = k1[4])
 
 
-@main.route('/download', methods=["GET", "POST"])
+@app.route('/download', methods=["GET", "POST"])
 def download():
     return redirect("/portfolio")
 
-@main.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def getupload():
     if request.method == "POST":
         try:
@@ -127,7 +118,9 @@ def getupload():
                 image_array = np.asarray(image)
                 normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
                 data[0] = normalized_image_array
-                prediction = model.predict(data)
+                # prediction = model.predict(data)
+
+                prediction = [[0.9, 0.1]]
                 
                 result = prediction[0]
                 # print(result)
@@ -161,15 +154,38 @@ def getupload():
             return render_template('upload.html', errorMessage="Please upload either a jpeg or png image.")
     return redirect("/upload")
 
-@main.route('/stats')
+@app.route('/stats')
 def stats():
     return render_template('stats.html')
 
-@main.route('/portfolio')
+@app.route('/portfolio')
 def help():
     
     return render_template('portfolio.html', entries=get_patients())
 
-@main.route('/404')
+@app.route('/ai')
+def aihome():
+    return render_template("ai.html")
+
+@app.route('/ai', methods=['GET', 'POST'])
+def ai():
+    if request.method == "POST":
+        try:
+            question = request.form['question']
+            numsentences = request.form["numofsentences"]
+
+            response = "Upload an image of the text or copy and paste it in the text box. Upload an image of the text or copy and paste it in the text box. Upload an image of the text or copy and paste it in the text box."
+            
+            if question != "" and numsentences != "":
+                numsentences = int(numsentences)
+                print(question, numsentences)
+                return render_template('ai.html', response=response)
+            else:
+                return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
+        except:
+            return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
+    return redirect("/forum")
+
+@app.route('/404')
 def error():
     return render_template('404.html')
