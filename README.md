@@ -1,2 +1,2 @@
-# MalariaDiagnosis
-Using machine learning to diagnose malaria from an image of blood sample
+# Tuber
+Using machine learning to diagnose tubercolosis from a chest x-ray.

@@ -1,1 +1,0 @@
-web: gunicorn -k eventlet main:main_app

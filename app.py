@@ -10,6 +10,7 @@ from datetime import datetime
 import os
 import pathlib
 import hashlib
+from questions import main
 
 from PIL import Image, ImageOps
 
@@ -172,18 +173,15 @@ def ai():
     if request.method == "POST":
         try:
             question = request.form['question']
-            numsentences = request.form["numofsentences"]
-
-            response = "Upload an image of the text or copy and paste it in the text box. Upload an image of the text or copy and paste it in the text box. Upload an image of the text or copy and paste it in the text box."
-            
-            if question != "" and numsentences != "":
-                numsentences = int(numsentences)
-                print(question, numsentences)
-                return render_template('ai.html', response=response)
-            else:
-                return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
         except:
             return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
+
+        if question != "":
+            response = main(question)
+            return render_template('ai.html', response=response)
+        else:
+            return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
+
     return redirect("/forum")
 
 @app.route('/404')
