@@ -207,7 +207,3 @@ def top_sentences(query, sentences, idfs, n):
     top_sentence = [scores[i][0] for i in range(n)]
 
     return top_sentence
-
-
-if __name__ == "__main__":
-    main("Who is the father of modern medicine?")
