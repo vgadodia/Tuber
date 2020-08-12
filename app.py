@@ -18,6 +18,7 @@ app = Flask(__name__)
 
 np.set_printoptions(suppress=True)
 model = tensorflow.keras.models.load_model('keras_model.h5')
+model2 = tensorflow.keras.models.load_model('malaria_model.h5')
 
 import pyrebase
 
@@ -73,6 +74,58 @@ def get_age_data():
 def index2():
     return redirect("/ai")
 
+@app.route('/malaria')
+def getmalaria():
+    return render_template("malaria.html")
+
+@app.route('/malaria', methods=['GET', 'POST'])
+def malaria():
+    if request.method == "POST":
+        try:
+            memory = request.files['memory']
+            
+            if memory.filename != "":
+                memory.save(memory.filename)
+                data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+                image = Image.open(memory.filename)
+                size = (224, 224)
+                image = ImageOps.fit(image, size, Image.ANTIALIAS)
+                image_array = np.asarray(image)
+                normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
+                data[0] = normalized_image_array
+                prediction = model2.predict(data)
+                
+                result = prediction[0]
+                # print(result)
+                diagnosis = ""
+                prob = 0
+                if result[0] > result[1]:
+                    diagnosis="Uninfected"
+                    prob = round(result[0] * 100, 2)
+                else:
+                    diagnosis = "Malaria"
+                    prob = round(result[1] * 100, 2)
+                text = "hello there"
+
+                firstname = request.form["firstname"]
+                lastname = request.form["lastname"]
+                age = request.form["age"]
+                height = request.form["height"]
+                weight = request.form["weight"]
+                now = datetime.now()
+                date = now.strftime("%d/%m/%Y %H:%M:%S")
+                new_entry = [date, firstname, lastname, age, height, weight, diagnosis, str(prob)]
+                add_patient(new_entry)
+                
+                
+                return render_template('results.html', diagnosis=diagnosis, prob=prob, result=result, text=text)
+            
+            else:
+                return render_template('malaria.html', errorMessage="Please upload either a jpeg or png image.")
+        except:
+            print("EXCEPT")
+            return render_template('malaria.html', errorMessage="Please upload either a jpeg or png image.")
+    return redirect("/malaria")
 
 @app.route('/')
 def index():
@@ -118,7 +171,7 @@ def getupload():
             diagnosis = ""
             prob = 0
             if result[0] > result[1]:
-                diagnosis="Normal"
+                diagnosis="Uninfected"
                 prob = round(result[0] * 100, 2)
             else:
                 diagnosis = "Tuberculosis"
