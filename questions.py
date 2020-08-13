@@ -69,7 +69,7 @@ def load_files(directory):
         if os.path.isfile(path):
 
             # Open text file
-            with open(path, "r") as f:
+            with open(path, "r",  encoding='UTF8') as f:
 
                 # Store contents to dictionary
                 corpus_mapping[textfile] = f.read()
