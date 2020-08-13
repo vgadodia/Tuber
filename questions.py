@@ -45,10 +45,8 @@ def main(question, SENTENCE_MATCHES=1):
 
     # Determine top sentence matches
     matches = top_sentences(query, sentences, idfs, n=SENTENCE_MATCHES)
-    sentence = ""
     for match in matches:
-        sentence += match
-    return sentence
+        return match
 
 
 def load_files(directory):
@@ -207,3 +205,7 @@ def top_sentences(query, sentences, idfs, n):
     top_sentence = [scores[i][0] for i in range(n)]
 
     return top_sentence
+
+
+if __name__ == "__main__":
+    main("What is Malaria?")

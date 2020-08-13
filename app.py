@@ -217,11 +217,7 @@ def ai():
             return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
 
         if question != "":
-            print("HEYYY")
             response = main(question)
-            print("HEYYY")
-            print(response)
-            print("HEYYY")
             return render_template('ai.html', response=response)
         else:
             return render_template('ai.html', errorMessage="Please type in a question, as well as the number of sentences you would like to view.")
