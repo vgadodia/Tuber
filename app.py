@@ -48,7 +48,7 @@ def get_numbers():
     b = 0
 
     for i in get_patients():
-        if i[6] == "Normal":
+        if i[6] == "Uninfected":
             a += 1
         else:
             b += 1
@@ -58,7 +58,7 @@ def get_age_data():
     final = [0, 0, 0, 0, 0]
 
     for i in k:
-        if i[6] == "Tuberculosis":
+        if i[6] == "Tuberculosis" or i[6] == "Malaria":
             if int(i[3]) < 20:
                 final[0] += 1
             elif int(i[3]) >= 20 and int(i[3]) < 40:
@@ -96,7 +96,7 @@ def malaria():
                 prediction = model2.predict(data)
                 
                 result = prediction[0]
-                # print(result)
+                
                 diagnosis = ""
                 prob = 0
                 if result[0] > result[1]:
