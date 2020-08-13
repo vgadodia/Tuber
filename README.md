@@ -1,2 +1,2 @@
 # Tuber
-Using machine learning to diagnose tubercolosis from a chest x-ray.
+Using machine learning to diagnose tubercolosis and malaria from chest x-rays and red blood cell scans.
