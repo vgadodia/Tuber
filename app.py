@@ -161,7 +161,7 @@ def getupload():
             size = (224, 224)
             image = ImageOps.fit(image, size, Image.ANTIALIAS)
             image_array = np.asarray(image)
-            image_array = np.stack((image_array,)*3, axis=-1)
+            # image_array = np.stack((image_array,)*3, axis=-1)
             normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
             
             data[0] = normalized_image_array
