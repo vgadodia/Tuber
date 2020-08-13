@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Med Check</title>
+    <title>Tuber</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-4.3.1/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/slick-1.8.1/slick.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/meanmenu/meanmenu.css') }}"/>
@@ -81,9 +81,9 @@
                     <div class="container">
                         <div class="row justify-content-center align-items-center position-relative">
                             <div class="col-sm-4 col-6 col-lg-2 col-xl-2 order-lg-1">
-                                <div class="brand">
+                                <!-- <div class="brand">
                                     <a href="/"><img width="175" style="margin-left: 20px;" src="{{ url_for('static', filename='image/med-detect-reallogo.png') }}"/></a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-sm-7 col-lg-3 col-xl-3 offset-xl-1 d-none d-sm-block order-lg-3">
                                 <div class="header-btns">
@@ -96,15 +96,16 @@
                                 <div class="main-navigation">
                                     <ul class="main-menu">
                                         <li class="menu-item "><a href="/">Home</a></li>
-                                        <li class="menu-item "><a href="/upload" style="color:#48bbed;">Upload</a></li>
+                                        <li class="menu-item"><a href="/upload">Tuberculosis</a></li>
+                                        <li class="menu-item"><a href="/malaria" style="color:#00C600;">Malaria</a></li>
                                           <li class="menu-item">
-                                            <a href="/portfolio">Portfolio</a>
+                                            <a href="/portfolio">Management</a>
                                           </li>
                                           <li class="menu-item">
                                             <a href="/trends">Trends</a>
                                           </li>
                                           <li class="menu-item">
-                                            <a href="/forum">Forum</a>
+                                            <a href="/forum">Intelligence</a>
                                           </li>
                                         </ul>
                                 </div>
@@ -132,7 +133,7 @@
                 </section>
         <section class="cta-section" style="margin-top:-100px;margin-bottom:100px;">
             <div class="container" >
-                <div class="cta-inner-wrapper" style="background-color: #48bbed;">
+                <div style="background-color: #258aff;padding: 40px;border-radius: 100px;">
                     <div class="row justify-content-center" >
                         <div class="col-xl-7 col-lg-8">
                             <div class="cta-content" >
